@@ -1,0 +1,10 @@
+#start by ignoring everything
+*
+!.gitignore
+
+#track assembly and include files
+!*.asm
+!*.inc
+
+#track Makefile
+!Makefile
