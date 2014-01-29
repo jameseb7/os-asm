@@ -3,7 +3,9 @@ LD := /usr/local/cross/bin/i586-elf-ld
 
 ASFLAGS := -w+all -w+error
 
-OBJECTS := loader.o kernel_output.o
+SOURCES := $(wildcard *.asm)
+DEPENDS := $(SOURCES:.asm=.dep)
+OBJECTS := $(SOURCES:.asm=.o)
 
 DISK := floppy.img
 LOOP := /dev/loop0
@@ -11,15 +13,14 @@ MNT  := /mnt/floppy
 
 .PHONY: all install
 
--include *.dep
-
 all: kernel.bin
 
 kernel.bin: linkscript.ld $(OBJECTS)
-	@$(LD) -T linkscript.ld -o $@ $(OBJECTS)
+	$(LD) -T linkscript.ld -o $@ $(OBJECTS)
 
 %.o: %.asm
-	@$(AS) -f elf32 -o $@ $(ASFLAGS) -MD $(*F).dep $<
+	$(AS) -f elf32 -o $@ $(ASFLAGS) -MD $(*F).dep $<
+-include *.dep
 
 install:
 	@losetup $(LOOP) $(DISK); \
