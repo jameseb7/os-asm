@@ -11,13 +11,15 @@ MNT  := /mnt/floppy
 
 .PHONY: all install
 
+-include *.dep
+
 all: kernel.bin
 
 kernel.bin: linkscript.ld $(OBJECTS)
 	@$(LD) -T linkscript.ld -o $@ $(OBJECTS)
 
 %.o: %.asm
-	@$(AS) -f elf32 -o $@ $(ASFLAGS) $<
+	@$(AS) -f elf32 -o $@ $(ASFLAGS) -MD $(*F).dep $<
 
 install:
 	@losetup $(LOOP) $(DISK); \
