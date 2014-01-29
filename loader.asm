@@ -1,5 +1,7 @@
         bits 32
 
+        %include "kernel_output.inc"
+
         section .data
 magic:  equ     0x1BADB002             ;multiboot magic number
 flags:  equ     11b   ;multiboot flags - align page, memory map
@@ -20,10 +22,20 @@ multiboot_header:
         global loader
 loader: 
         cli
-        mov esp, stack_top
+        mov     esp, stack_top
 
-        mov byte [0xB8000], 'A'
-        mov byte [0xB8001], 07h
+        call    clear_screen
+
+        section .rodata
+hello_str:      db      'Hello, world!'
+        
+        section .text
+        
+        push    hello_str
+        call    kprint
+        call    newline
+        call    kprint
+        add     esp, 4
 
         cli
         hlt

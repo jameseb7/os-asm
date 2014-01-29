@@ -3,7 +3,7 @@ LD := /usr/local/cross/bin/i586-elf-ld
 
 ASFLAGS := -w+all -w+error
 
-OBJECTS := loader.o
+OBJECTS := loader.o kernel_output.o
 
 DISK := floppy.img
 LOOP := /dev/loop0
