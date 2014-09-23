@@ -3,7 +3,8 @@
         section .data
 
 video_memory_start      equ     0xB8000
-video_memory_end        equ     video_memory_start + (80*32*2)
+video_memory_length		equ		80*32*2
+video_memory_end        equ     video_memory_start + video_memory_length
         
 output_pos:     dd      video_memory_start
         
@@ -59,9 +60,9 @@ clear_screen:
         pusha
         
         mov     dl, 0
-        mov     edi, video_memory_start
+        mov     ecx, video_memory_length
 .loop:   
-        mov     [video_memory_start + ecx], dl
+        mov     [video_memory_start-1 + ecx], dl
         loop    .loop
 
         popa
